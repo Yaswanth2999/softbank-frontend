@@ -1,0 +1,27 @@
+.container-fluid {
+    background-color: #3581cd;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+}
+ 
+.offer-card {
+    margin: 20px 0;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 10px; /* Added border radius */
+    overflow: hidden; /* Ensures the border radius is applied to the image as well */
+}
+ 
+.offer-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+ 
+.offer-image {
+    height: 160px;
+    object-fit: cover;
+}
+ 
+.card-body {
+    text-align: center;
+}

@@ -1,0 +1,45 @@
+<header class="fixed-top">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="logo">
+                    <img src="images/banklogo (2).jpg" alt="Logo" height="80" width="100" style="border-radius: 50px;">
+                    
+                </div>
+            </div>
+            <div class="col-sm-8" style="text-align: center;">
+                <nav>
+                    <ul>
+                        <li><a class="active" routerLink="/"><i style="color: yellow;" class="fa fa-fw fa-home"></i>Home</a></li>
+                        <li><a routerLink="/investment"><i style="color: yellow; " class="fa fa-fw fa-building"></i>Investment&Insurance</a></li>
+                        <li><a routerLink="/offers"><i style="color: yellow;"class="fa fa-fw fa-gift"></i>Offers</a></li>
+                        <li><a routerLink="/cards"><i style="color: yellow;"class="fa fa-fw fa-credit-card"></i>Cards</a></li>
+                        <li><a routerLink="/contact"><i style="color: yellow;"class="fa fa-fw fa-envelope"></i>Contact</a></li>
+                    </ul>
+                </nav>
+            </div> 
+            <div class="col-sm-1">
+                <div class="dropdown">
+                    <a class="dropdown-toggle login-icon-background  no-underline text-custom-color" id="dropdownMenuButton" data-mdb-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-fw fa-user fa-2x icon-custom-color"></i>login
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item no-underline" routerLink="/login">Customer Login</a></li>
+                        <li><a class="dropdown-item no-underline" routerLink="/admin">Admin Login</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+
+                                       
+        </div>
+    </div>
+</header>
+<br><br><br>
+
+<main>
+    <router-outlet></router-outlet>
+</main>
+
+
+

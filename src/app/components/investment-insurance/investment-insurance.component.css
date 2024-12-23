@@ -1,0 +1,45 @@
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+.section {
+    padding: 20px;
+    margin: 20px 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+.section:hover {
+    transform: scale(1.05);
+}
+.section h2 {
+    color: #333;
+}
+.section p {
+    color: #666;
+}
+.section img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+.section ul {
+    padding: 0;
+    list-style: none;
+}
+.section ul li {
+    font-size: 1.2em;
+    margin: 10px 0;
+    color: #666;
+}
+.section ul li i {
+    margin-right: 10px;
+    color: #007bff;
+}
+.img-fluid{
+    margin-left: 150px;
+    height: 200px;
+}

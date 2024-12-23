@@ -1,0 +1,103 @@
+header {
+  background: #008970;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style:none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+nav li {
+  margin-left: 30px;
+  border:#008970;
+}
+nav a {
+  color: #fcfafa;
+  text-decoration: double;
+  text-transform: uppercase;
+  font-size: 14px;
+  position: relative;
+}
+nav a:hover {
+  color:#f85d37;
+}
+nav a:hover::before {
+  width: 100%;
+}
+
+.col-sm-1, .col-sm-8 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dropdown:hover>.dropdown-menu {  
+    display: block;
+    
+    background-color: hsl(63, 90%, 81%);
+    min-width: 160px;
+    
+  }
+.dropdown>.dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}
+.login-icon-background {
+  background: linear-gradient(135deg, #f85d37, #feb47b); /* Gradient background */
+  padding: 10px;
+  border-radius: 50%; /* Circular background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px; /* Adjust the width and height as needed */
+  height: 50px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  transition: transform 0.3s ease; /* Smooth transformation */
+}
+
+.login-icon-background:hover {
+  transform: scale(1.1); /* Slightly increase size on hover */
+}
+.icon-custom-color {
+  color: #eef3f3; /* Change this to your preferred color */
+}
+
+.icon-custom-color:hover {
+  color: #f9faff; /* Optional: Different color on hover */
+}
+ a { 
+  text-decoration: none;
+ } 
+a:hover {
+  text-decoration: none;
+ }
+ .text-custom-color {
+  color:white; /* Change this to your preferred color */
+}
+
+.text-custom-color:hover {
+  color:white; /* Optional: Different color on hover */
+}
+

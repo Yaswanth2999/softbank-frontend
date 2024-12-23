@@ -1,0 +1,48 @@
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center">
+    <h3>Pending Account Requests</h3>
+    <button (click)="onLogout()" class="btn btn-danger">Logout</button>
+  </div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Account No</th>
+        <th>Account Type</th>
+        <th>Aadhar PDF</th>
+        <th>Passport Photo</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let request of accountRequests">
+        <td>{{ request.accountNo }}</td>
+        <td>{{ request.accountType }}</td>
+        <td><a [href]="getPdfUrl(request.aadharPdf)" target="_blank">View PDF</a></td>
+        <td><img [src]="getImageUrl(request.passportPhoto)" alt="Passport Photo" width="100"></td>
+        <td>
+          <button class="btn btn-approve" (click)="approveAccount(request.accountNo)">Approve</button>
+          <button class="btn btn-reject" (click)="rejectAccount(request.accountNo)">Reject</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="message" class="alert alert-info mt-3">
+    Status: {{ message }}
+  </div>
+</div>
+
+<br>
+<div class="container">
+  <h3>Account Operations</h3>
+  <div class="form-group">
+    <label for="accountNo">Account No:</label>
+    <input id="accountNo" [(ngModel)]="accountNo" type="text" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label for="amount">Amount:</label>
+    <input id="amount" [(ngModel)]="amount" type="number" class="form-control" />
+  </div>
+  <button class="btn btn-primary" (click)="depositMoney(accountNo, amount)">Deposit</button>
+  <button class="btn btn-secondary" (click)="withdrawMoney(accountNo, amount)">Withdraw</button>
+</div>
+

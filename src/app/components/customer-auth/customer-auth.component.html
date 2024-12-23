@@ -1,0 +1,117 @@
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="auth-container">
+        <h3 *ngIf="view === 'login'">Login to your Account</h3>
+        <h3 *ngIf="view === 'register'">Register a New Account</h3>
+        <h3 *ngIf="view === 'forgot-username'">Forgot Username</h3>
+        <h3 *ngIf="view === 'reset-password'">Reset Password</h3>
+  
+        <form *ngIf="view === 'login'" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" formControlName="username" required>
+            <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="text-danger">
+              Username is required and must be at least 3 characters long.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" formControlName="password" required>
+            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-danger">
+              Password is required and must be at least 6 characters long.
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success btn-auth" [disabled]="loginForm.invalid">Login</button>
+          <a (click)="setView('register')">New User? Sign Up</a>
+          <a (click)="setView('forgot-username')">Forgot Username?</a>
+          <a (click)="setView('reset-password')">Reset Password?</a>
+        </form>
+  
+        <form *ngIf="view === 'register'" [formGroup]="registerForm" (ngSubmit)="onRegister()">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" formControlName="username" required>
+            <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" class="text-danger">
+              Username is required and must be at least 3 characters long.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" formControlName="email" required>
+            <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-danger">
+              Valid email is required.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="accountNo">Account Number</label>
+            <input type="text" class="form-control" id="accountNo" formControlName="accountNo" required>
+            <div *ngIf="registerForm.get('accountNo')?.invalid && registerForm.get('accountNo')?.touched" class="text-danger">
+              Account Number is required and must be 10 digits long.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="authPin">Auth Pin</label>
+            <input type="text" class="form-control" id="authPin" formControlName="authPin" required>
+            <div *ngIf="registerForm.get('authPin')?.invalid && registerForm.get('authPin')?.touched" class="text-danger">
+              Auth Pin is required and must be 4 digits long.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Login Password</label>
+            <input type="password" class="form-control" id="loginPassword" formControlName="loginPassword" required>
+            <div *ngIf="registerForm.get('loginPassword')?.invalid && registerForm.get('loginPassword')?.touched" class="text-danger">
+              Login Password is required and must be at least 6 characters long.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="transactionPassword">Transaction Password</label>
+            <input type="password" class="form-control" id="transactionPassword" formControlName="transactionPassword" required>
+            <div *ngIf="registerForm.get('transactionPassword')?.invalid && registerForm.get('transactionPassword')?.touched" class="text-danger">
+              Transaction Password is required and must be at least 6 characters long.
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success btn-auth" [disabled]="registerForm.invalid">Register</button>
+          <a (click)="setView('login')">Already have an account? Login</a>
+        </form>
+  
+        <form *ngIf="view === 'forgot-username'" [formGroup]="forgotUsernameForm" (ngSubmit)="onForgotUsername()">
+          <div class="form-group">
+            <label for="authPin">Auth Pin</label>
+            <input type="text" class="form-control" id="authPin" formControlName="authPin" required>
+            <div *ngIf="forgotUsernameForm.get('authPin')?.invalid && forgotUsernameForm.get('authPin')?.touched" class="text-danger">
+              Auth Pin is required and must be 4 digits long.
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success btn-auth" [disabled]="forgotUsernameForm.invalid">Retrieve Username</button>
+          <a (click)="setView('login')">Back to Login</a>
+        </form>
+  
+        <form *ngIf="view === 'reset-password'" [formGroup]="resetPasswordForm" (ngSubmit)="onResetPassword()">
+          <div class="form-group">
+            <label for="authPin">Auth Pin</label>
+            <input type="text" class="form-control" id="authPin" formControlName="authPin" required>
+            <div *ngIf="resetPasswordForm.get('authPin')?.invalid && resetPasswordForm.get('authPin')?.touched" class="text-danger">
+              Auth Pin is required and must be 4 digits long.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" class="form-control" id="newPassword" formControlName="newPassword" required>
+            <div *ngIf="resetPasswordForm.get('newPassword')?.invalid && resetPasswordForm.get('newPassword')?.touched" class="text-danger">
+              New Password is required and must be at least 6 characters long.
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success btn-auth" [disabled]="resetPasswordForm.invalid">Reset Password</button>
+          <a (click)="setView('login')">Back to Login</a>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal" *ngIf="isModalVisible">
+    <div class="modal-content">
+      <span class="close-btn" (click)="closeModal()">&times;</span>
+      <p>{{ modalMessage }}</p>
+    </div>
+  </div>
