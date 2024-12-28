@@ -3,8 +3,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
+    height: 200%;
+    margin: 0;  
     font-family: Arial, sans-serif;
 }
  
@@ -26,6 +26,8 @@ body {
     max-width: 400px;
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
+    margin: 40px 0; /* Added margin to create space from the top and bottom */
+
 }
  
 .auth-container:hover {
@@ -125,4 +127,6 @@ body {
     text-decoration: none;
     cursor: pointer;
   }
+
+
   

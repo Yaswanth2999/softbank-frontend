@@ -39,12 +39,12 @@ export class UserDetailsComponent implements OnInit,OnDestroy {
     remarks: '',
     transactionDate: '',
     fromAccountBalanceAfterTransaction: 0,
-    toAccountBalanceAfterTransaction:0,
+    toAccountBalanceAfterTransaction: 0,
     transactionPassword: '',
   };
   timer: string | undefined;
   timeout: any;
-  showTransactions =false;
+  showTransactions = false;
 
   constructor(private dashboardService: DashboardService, private router: Router) {}
 
@@ -57,7 +57,6 @@ export class UserDetailsComponent implements OnInit,OnDestroy {
     clearTimeout(this.timeout);
   }
 
-  
   fetchUserDetails(): void {
     if (typeof window !== 'undefined' && window.localStorage) {
       const username = localStorage.getItem('username'); // Retrieve stored username
@@ -78,13 +77,47 @@ export class UserDetailsComponent implements OnInit,OnDestroy {
 
   fetchTransactionHistory(): void {
     if (this.dateRange.startDate && this.dateRange.endDate) {
-      this.dashboardService.getTransactionHistoryCustom(this.userDetails.accountNo, this.userDetails.upiId, this.dateRange.startDate, this.dateRange.endDate).subscribe(
+      const formattedStartDate = new Date(this.dateRange.startDate).toISOString().split('T')[0];
+      const formattedEndDate = new Date(this.dateRange.endDate).toISOString().split('T')[0];
+  
+      this.dashboardService.getTransactionHistoryCustom(this.userDetails.accountNo, this.userDetails.upiId, formattedStartDate, formattedEndDate).subscribe(
         transactions => {
-          this.transactions = transactions.map(transaction => ({
-            ...transaction,
-            displayFrom: transaction.transactionType === 'UPI' ? transaction.fromUpiId : transaction.fromAccount,
-            displayTo: transaction.transactionType === 'UPI' ? transaction.toUpiId : transaction.toAccount
-          }));
+          this.transactions = transactions.map(transaction => {
+            let balanceAfterTransaction;
+            let amount = transaction.amount;
+            let debitCredit = '';
+  
+            if (transaction.transactionType === 'UPI') {
+              if (transaction.fromUpiId === this.userDetails.upiId) {
+                balanceAfterTransaction = transaction.fromAccountBalanceAfterTransaction;
+                amount = -amount; // Debit
+                debitCredit = 'Debit';
+              } else if (transaction.toUpiId === this.userDetails.upiId) {
+                balanceAfterTransaction = transaction.toAccountBalanceAfterTransaction;
+                amount = +amount; // Credit
+                debitCredit = 'Credit';
+              }
+            } else {
+              if (transaction.fromAccount === this.userDetails.accountNo) {
+                balanceAfterTransaction = transaction.fromAccountBalanceAfterTransaction;
+                amount = -amount; // Debit
+                debitCredit = 'Debit';
+              } else if (transaction.toAccount === this.userDetails.accountNo) {
+                balanceAfterTransaction = transaction.toAccountBalanceAfterTransaction;
+                amount = +amount; // Credit
+                debitCredit = 'Credit';
+              }
+            }
+  
+            return {
+              ...transaction,
+              displayFrom: transaction.transactionType === 'UPI' ? transaction.fromUpiId : transaction.fromAccount,
+              displayTo: transaction.transactionType === 'UPI' ? transaction.toUpiId : transaction.toAccount,
+              balanceAfterTransaction,
+              amount,
+              debitCredit
+            };
+          });
           this.showTransactions = true; // Show the table and button
         },
         error => {
@@ -103,15 +136,16 @@ export class UserDetailsComponent implements OnInit,OnDestroy {
       remarks: this.transaction.remarks!,
       transactionDate: '',
       fromAccountBalanceAfterTransaction: 0,
-      toAccountBalanceAfterTransaction:0,
+      toAccountBalanceAfterTransaction: 0,
       transactionPassword: this.transaction.transactionPassword!
     };
-
+  
     this.dashboardService.performNeftTransaction(neftTransaction).subscribe(
       response => {
         console.log(response);
-        this.transactionSuccessMessage = 'NEFT Transaction successful';
-        this.showPaymentSuccessModal('Payment successful');
+        this.transactionSuccessMessage = response;
+        this.showPaymentSuccessModal(response);
+        this.fetchUserDetails(); // Reload current balance
       },
       error => {
         console.error('Error performing NEFT transaction:', error);
@@ -129,15 +163,16 @@ export class UserDetailsComponent implements OnInit,OnDestroy {
       remarks: this.transaction.remarks!,
       transactionDate: '',
       fromAccountBalanceAfterTransaction: 0,
-      toAccountBalanceAfterTransaction:0,
+      toAccountBalanceAfterTransaction: 0,
       transactionPassword: this.transaction.transactionPassword!
     };
-
+  
     this.dashboardService.performUpiTransaction(upiTransaction).subscribe(
       response => {
         console.log(response);
-        this.transactionSuccessMessage = 'UPI Transaction successful';
-        this.showPaymentSuccessModal('Payment successful');
+        this.transactionSuccessMessage = response;
+        this.showPaymentSuccessModal(response);
+        this.fetchUserDetails(); // Reload current balance
       },
       error => {
         console.error('Error performing UPI transaction:', error);
@@ -159,7 +194,7 @@ export class UserDetailsComponent implements OnInit,OnDestroy {
   }
 
   startTimer(): void {
-    let timeLeft = 5 * 60; // 15 minutes in seconds
+    let timeLeft = 5 * 60; // 5 minutes in seconds
     this.updateTimer(timeLeft);
 
     this.timeout = setInterval(() => {
@@ -209,7 +244,7 @@ export class UserDetailsComponent implements OnInit,OnDestroy {
       remarks: '',
       transactionDate: '',
       fromAccountBalanceAfterTransaction: 0,
-      toAccountBalanceAfterTransaction:0,
+      toAccountBalanceAfterTransaction: 0,
       transactionPassword: '',
     };
   }
@@ -232,6 +267,4 @@ export class UserDetailsComponent implements OnInit,OnDestroy {
       console.error('Element with ID "transactionTable" not found.');
     }
   }
-
- 
 }

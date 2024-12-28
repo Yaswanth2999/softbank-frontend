@@ -17,7 +17,11 @@ export interface TransactionSummaryDTO {
   transactionType: string;
   remarks: string;
   transactionDate: string;
-  balanceAfterTransaction: number;
+  fromAccountBalanceAfterTransaction: number;
+  toAccountBalanceAfterTransaction: number;
+  balanceAfterTransaction?: number; // Add this optional property
+  debitCredit?: string; // Optional property
+
 }
 
 export interface NEFTTransactionDTO {

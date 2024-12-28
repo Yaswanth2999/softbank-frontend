@@ -17,14 +17,16 @@ import { AccountRequestDTO } from '../../models/userdetails';
 export class AdminDashboardComponent implements OnInit {
   accountRequests: AccountRequestDTO[] = [];
   message: string = '';
-  accountNo: string = '';
-  amount: number = 0;
+  depositAccountNo: string = '';
+  depositAmount: number = 0;
+  withdrawAccountNo: string = '';
+  withdrawAmount: number = 0;
   username: string = 'admin';
   password: string = 'admin';
   pdfUrl: SafeResourceUrl | null = null;
   pdfBlobUrl: string | null = null;
   pdfVisible: boolean = false;
-
+ 
   constructor(
     private adminService: AdminService,
     private router: Router,
@@ -39,11 +41,11 @@ export class AdminDashboardComponent implements OnInit {
       this.password = state.password;
     }
   }
-
+ 
   ngOnInit(): void {
     this.fetchAccountRequests();
   }
-
+ 
   fetchAccountRequests() {
     this.adminService.getPendingAccountRequests(this.username, this.password).subscribe(
       response => {
@@ -56,7 +58,7 @@ export class AdminDashboardComponent implements OnInit {
       }
     );
   }
-
+ 
   approveAccount(accountNo: string) {
     this.adminService.approveAccount(accountNo, this.username, this.password).subscribe(
       response => {
@@ -71,7 +73,7 @@ export class AdminDashboardComponent implements OnInit {
       }
     );
   }
-
+ 
   rejectAccount(accountNo: string) {
     this.adminService.rejectAccount(accountNo, this.username, this.password).subscribe(
       response => {
@@ -86,7 +88,7 @@ export class AdminDashboardComponent implements OnInit {
       }
     );
   }
-
+ 
   depositMoney(accountNo: string, amount: number) {
     this.adminService.depositMoney(accountNo, amount, this.username, this.password).subscribe(
       response => {
@@ -99,7 +101,7 @@ export class AdminDashboardComponent implements OnInit {
       }
     );
   }
-
+ 
   withdrawMoney(accountNo: string, amount: number) {
     this.adminService.withdrawMoney(accountNo, amount, this.username, this.password).subscribe(
       response => {
@@ -112,19 +114,19 @@ export class AdminDashboardComponent implements OnInit {
       }
     );
   }
-
+ 
   private updateAccountStatus(accountNo: string, status: string) {
     const account = this.accountRequests.find(req => req.accountNo === accountNo);
     if (account) {
       account.status = status;
     }
   }
-
+ 
   isPdfField(fieldName: unknown): boolean {
     const pdfFields = ['aadharPdf', 'passportPhoto'];
     return typeof fieldName === 'string' && pdfFields.includes(fieldName);
   }
-
+ 
   showPdf(fieldName: unknown) {
     if (typeof fieldName === 'string') {
       const accountRequest = this.accountRequests.find(req => req[fieldName as keyof AccountRequestDTO]);
@@ -143,11 +145,11 @@ export class AdminDashboardComponent implements OnInit {
       }
     }
   }
-
+ 
   hidePdf() {
     this.pdfVisible = false;
   }
-
+ 
   private convertBase64ToBlobUrl(base64: string): string {
     try {
       const byteCharacters = atob(base64);
@@ -163,22 +165,22 @@ export class AdminDashboardComponent implements OnInit {
       return '';
     }
   }
-
+ 
   private isValidBase64(base64: string): boolean {
     const base64Regex = /^(?:[A-Za-z0-9+\/]{4})*?(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/;
     return base64Regex.test(base64);
   }
-
+ 
   getPdfUrl(base64: string): string {
     const blobUrl = this.convertBase64ToBlobUrl(base64);
     return this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl) as string;
   }
-
+ 
   getImageUrl(base64: string): string {
     return `data:image/jpeg;base64,${base64}`;
   }
-
+ 
   onLogout() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/admin']);
   }
 }
